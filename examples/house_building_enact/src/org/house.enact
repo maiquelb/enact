@@ -3,6 +3,6 @@ sai__is(State,play(Ag,roofer,_)) enact-as  mail(Ag,"You have been hired as roofe
 sai__is(State,play(Ag,bricklayer,_)) enact-as mail(Ag,"You have been hired as bricklayer.").
 sai__is(State,play(Ag,site_prep_contractor,_)) enact-as mail(Ag,"You have been hired as site prep.").
 sai__is(State,play(Ag,painter,_)) enact-as mail(Ag,"You have been hired as painter.").
-sai__is(State,play(Ag,electrician,_)) enact-as mail(Ag,"You have been hired as window electrician.").
+sai__is(State,play(Ag,electrician,_)) enact-as mail(Ag,"You have been hired as electrician.").
 sai__is(State,play(Ag,plumber,_)) enact-as mail(Ag,"You have been hired as plumber.").
 sai__is(State,play(Ag,door_fitter,_)) enact-as mail(Ag,"You have been hired as door fitter.").
