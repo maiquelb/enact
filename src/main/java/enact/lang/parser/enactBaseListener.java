@@ -138,18 +138,6 @@ public class enactBaseListener implements enactListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterSai__is_term(enactParser.Sai__is_termContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitSai__is_term(enactParser.Sai__is_termContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterPred(enactParser.PredContext ctx) { }
 	/**
 	 * {@inheritDoc}

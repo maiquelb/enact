@@ -1,12 +1,13 @@
 package enact.lang.parser;
 
-import enact.lang.semantics.EnactProgram;
-import enact.lang.semantics.EnactRule;
 import jason.asSyntax.parser.ParseException;
 import jason.asSyntax.parser.TokenMgrError;
 
 import static jason.asSyntax.ASSyntax.parseFormula;
 import static jason.asSyntax.ASSyntax.parseLiteral;
+
+import enact.lang.semantics.EnactProgram;
+import enact.lang.semantics.EnactRule;
 
 public class enactListenerImpl extends enactBaseListener {
 	

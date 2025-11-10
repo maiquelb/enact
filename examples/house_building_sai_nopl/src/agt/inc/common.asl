@@ -17,8 +17,8 @@
       
 
 // an unknown type of obligation was received
-+obligation(Ag,R,What,DeadLine)  
-   : .my_name(Ag)
-   <- println("I am obliged to ",What,", but I don't know what to do!").
+// +obligation(Ag,R,What,DeadLine)  
+//    : .my_name(Ag)
+//    <- println("I am obliged to ",What,", but I don't know what to do!").
 
 	

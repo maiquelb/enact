@@ -109,16 +109,6 @@ public interface enactListener extends ParseTreeListener {
 	 */
 	void exitSff_atom(enactParser.Sff_atomContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link enactParser#sai__is_term}.
-	 * @param ctx the parse tree
-	 */
-	void enterSai__is_term(enactParser.Sai__is_termContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link enactParser#sai__is_term}.
-	 * @param ctx the parse tree
-	 */
-	void exitSai__is_term(enactParser.Sai__is_termContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link enactParser#pred}.
 	 * @param ctx the parse tree
 	 */

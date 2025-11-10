@@ -26,12 +26,10 @@ number_of_tasks(NS) :- .findall( S, task(S), L) & .length(L,NS).
        getEnactListener(EnactListener)[artifact_id(EnactListenerArt)];
        addInstitutionalFactSource(SaiEngine)[artifact_id(EnactArt)];     
        addEnactListener(EnactListener)[artifact_id(EnactArt)];       
-       .print(">>>>>>>>>>>>>>> INST ART ", InstArt, "... sai engine: ", SaiEngine, ", listener: ", EnactListener);
        .
 
 -!setup_enact
-   <- //.print(">>>>>>>>>>>>>>> INST ART procurando...") ;
-      .wait(500);
+   <- .wait(500);
       !setup_enact.
 
 +!have_a_house
@@ -54,8 +52,7 @@ number_of_tasks(NS) :- .findall( S, task(S), L) & .length(L,NS).
 
 
 +!wait_for_bids:nticks(X)&(X>=8000) // use an internal deadline of 5 seconds to close the auctions
-   <- .print("GOING TO STOP ", X);
-      stop[artifact_id(Clock)];
+   <- stop[artifact_id(Clock)];
       !show_winners.
 
 

@@ -35,7 +35,7 @@ arithm_atom		:	VAR|DIGIT+|'('arithm_term')';	//the basic element of arithm.expre
 */
 
 
-sai__is_term:	'sai__is('pred_term','pred_term','y')';
+//sai__is_term:	'sai__is('pred_term','pred_term','y')';
 
 pred	:	//ATOM(list)?;
 		//(TK_NEG)?ATOM(list_of_pred_terms)?(list)?;
@@ -64,7 +64,7 @@ list_term
 
 STRING
 	:	//'"'(ATOM|VAR|DIGIT|SPECIAL_CHAR_TERM)+(('/'|' ')(ATOM|VAR|DIGIT|SPECIAL_CHAR_TERM))*'"';	
-		'"'('a'..'z'|'A'..'Z'|DIGIT|'_'|'$'|'@'|SPECIAL_CHAR_TERM)*'"';
+		'"'('a'..'z'|'A'..'Z'|DIGIT|'_'|'$'|'@'|SPECIAL_CHAR_TERM|' ')*'"';
 		
 NEGATION 	:	'not';
 TK_NEG 	:                     '~';
@@ -81,8 +81,8 @@ SPECIAL_CHAR_TERM
 	:	('-'|'+'|'%'|'*'|'!'|'@'|'#'|'&'|'/'|':'|'.');
 
 COMMENT_STAT
-//	:	 '/*' (options {greedy=false;} : .)* '*/' //{$channel=HIDDEN;} //<- para antlr3
-	:	'/*' .*? '*/'-> channel(HIDDEN) //<- para antlr4
+	:	 '/*' (options {greedy=false;} : .)* '*/' //{$channel=HIDDEN;} //<- para antlr3
+	//:	'/*' .*? '*/'-> channel(HIDDEN) //<- para antlr4
 		;
 
 WS 	:	(' '|'\r'|'\n')+{skip();} ;

@@ -101,7 +101,7 @@ public class EnactArt extends Artifact implements ConstitutiveListener{
 	@Override
 	public void addStateAssignment(String assignee, StateStatusFunction sf) {
 		try {
-			YQueue.add(parseLiteral("sai___is("+assignee+","+sf+")[inst_fact]"));
+			YQueue.add(parseLiteral("sai__is("+assignee+","+sf+")[inst_fact]"));
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
