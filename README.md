@@ -1,1 +1,1 @@
-Example [here](examples)
+Example [here](examples/house_building_enact)
