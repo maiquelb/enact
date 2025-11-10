@@ -1,6 +1,6 @@
 This is a "sitauted" version of the classical house_built example enhanced with an _enactment engine_, which produces effects of institutional facts.
 
-The enactment specification is available at [src/org/house.enact](src/org/house.enact]).
+The enactment specification is available at [src/org/house.enact](src/org/house.enact).
 
 In this example, the enactment effects are log messages such as below:
 ```
