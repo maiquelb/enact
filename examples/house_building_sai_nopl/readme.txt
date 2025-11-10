@@ -1,4 +1,9 @@
-This is a "sitauted" version of the classical house_built example. The dynamic facts that animate the NOPL dynamics are constituted  from the environment instead of being produced by operations in the artifacts. The constitutive specification is in /src/org/constitutive.sai
+This is a "sitauted" version of the classical house_built example enhanced with an enactment engine, which produces effects from institutional facts.
+
+The enactment specification is available at (a)[d]
+
+
+The dynamic facts that animate the NOPL dynamics are constituted  from the environment instead of being produced by operations in the artifacts. The constitutive specification is in /src/org/constitutive.sai
 
 
 Running the example:
