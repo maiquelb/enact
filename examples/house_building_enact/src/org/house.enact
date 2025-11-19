@@ -1,8 +1,26 @@
-sai__is(State,play(Ag,window_fitter,_)) enact-as mail(Ag,"You have been hired as window fitter.").
-sai__is(State,play(Ag,roofer,_)) enact-as  mail(Ag,"You have been hired as roofer.").
-sai__is(State,play(Ag,bricklayer,_)) enact-as mail(Ag,"You have been hired as bricklayer.").
-sai__is(State,play(Ag,site_prep_contractor,_)) enact-as mail(Ag,"You have been hired as site prep.").
-sai__is(State,play(Ag,painter,_)) enact-as mail(Ag,"You have been hired as painter.").
-sai__is(State,play(Ag,electrician,_)) enact-as mail(Ag,"You have been hired as electrician.").
-sai__is(State,play(Ag,plumber,_)) enact-as mail(Ag,"You have been hired as plumber.").
-sai__is(State,play(Ag,door_fitter,_)) enact-as mail(Ag,"You have been hired as door fitter.").
+play(Ag,window_fitter,_) enact-as mail(Ag,"You have been hired as window fitter.").
+play(Ag,roofer,_) enact-as  mail(Ag,"You have been hired as roofer.").
+play(Ag,bricklayer,_) enact-as mail(Ag,"You have been hired as bricklayer.").
+play(Ag,site_prep_contractor,_) enact-as mail(Ag,"You have been hired as site prep.").
+play(Ag,painter,_) enact-as mail(Ag,"You have been hired as painter.").
+play(Ag,electrician,_) enact-as mail(Ag,"You have been hired as electrician.").
+play(Ag,plumber,_) enact-as mail(Ag,"You have been hired as plumber.").
+play(Ag,door_fitter,_) enact-as mail(Ag,"You have been hired as door fitter.").
+
+
+/*
+//sai__is(State,play(Ag,window_fitter,_)) enact-as mail(Ag,"You have been hired as window fitter.").
+//sai__is(State,play(Ag,roofer,_)) enact-as  mail(Ag,"You have been hired as roofer.").
+//sai__is(State,play(Ag,bricklayer,_)) enact-as mail(Ag,"You have been hired as bricklayer.").
+//sai__is(State,play(Ag,site_prep_contractor,_)) enact-as mail(Ag,"You have been hired as site prep.").
+//sai__is(State,play(Ag,painter,_)) enact-as mail(Ag,"You have been hired as painter.").
+//sai__is(State,play(Ag,electrician,_)) enact-as mail(Ag,"You have been hired as electrician.").
+//sai__is(State,play(Ag,plumber,_)) enact-as mail(Ag,"You have been hired as plumber.").
+//sai__is(State,play(Ag,door_fitter,_)) enact-as mail(Ag,"You have been hired as door fitter.").
+
+
+
+
+
+
+*/

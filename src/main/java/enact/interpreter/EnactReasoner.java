@@ -26,7 +26,7 @@ public class EnactReasoner extends Thread {
 	public EnactReasoner(AbstractQueue<Literal> queue) {
 		super();
 		this.queue = queue;
-		this.reasoner = new JasonReasoner(BasicReasonerHttpGUI.get(8999));
+		this.reasoner = new JasonReasoner(BasicReasonerHttpGUI.get(8004));
 		try {
 			this.reasoner.assertValue("enact__effect(Effect):-sai__enact__rule(Sai__Y,Effect)&Sai__Y");
 		} catch (RevisionFailedException e) {
@@ -45,20 +45,21 @@ public class EnactReasoner extends Thread {
 	@Override
 	public void run() {
 		try {
-			while (true) {				globalCicle++;
-			Literal s = queue.poll();
-			if (s != null) {
-				this.reasoner.retract("_[inst_fact]");
-				reasoner.assertValue(s.toString());
-				Collection<Literal>  effects = calculate();
-				if(effects.size()>0)
+			while (true) {				
+				globalCicle++;
+				Literal s = queue.poll();
+				if (s != null) {
+					this.reasoner.retract("_[inst_fact]");
+					reasoner.assertValue(s.toString());
+					Collection<Literal>  effects = calculate();
+					if(effects.size()>0)
 						for(EnactListener l : this.enactListeners) {
 							l.addEnactEffect(effects);
 							sleep(10);	
 						}
-			} else {
-				sleep(100);
-			}
+				} else {
+					sleep(100);
+				}
 			}
 		} catch (Throwable t) {
 			System.err.println("[EnactReasoner] Thread encerrada por exceção:");

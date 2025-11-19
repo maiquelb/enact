@@ -22,6 +22,7 @@ import enact.lang.parser.enactParser;
 import enact.lang.semantics.EnactProgramReasoner;
 import jason.asSyntax.Atom;
 import jason.asSyntax.Literal;
+import jason.asSyntax.Pred;
 import jason.asSyntax.parser.ParseException;
 import jason.asSyntax.parser.TokenMgrError;
 import sai.main.institution.ConstitutiveListener;
@@ -101,7 +102,10 @@ public class EnactArt extends Artifact implements ConstitutiveListener{
 	@Override
 	public void addStateAssignment(String assignee, StateStatusFunction sf) {
 		try {
-			YQueue.add(parseLiteral("sai__is("+assignee+","+sf+")[inst_fact]"));
+			YQueue.add(parseLiteral("sai__is("+assignee+","+sf+")[inst_fact]")); //add the constited elements in the form sai__is(X, Y)
+			Pred stateFact = sf.getState();
+			stateFact.addAnnot(parseLiteral("inst_fact"));
+			YQueue.add(stateFact); //add the constituted state-SF as a fact (e.g. play(Ag,Role,Group))
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
