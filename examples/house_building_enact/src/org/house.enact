@@ -8,6 +8,8 @@ play(Ag,plumber,_) enact-as mail(Ag,"You have been hired as plumber.").
 play(Ag,door_fitter,_) enact-as mail(Ag,"You have been hired as door fitter.").
 
 
+done(_,Task,Ag) enact-as pay(Ag).
+
 /*
 //sai__is(State,play(Ag,window_fitter,_)) enact-as mail(Ag,"You have been hired as window fitter.").
 //sai__is(State,play(Ag,roofer,_)) enact-as  mail(Ag,"You have been hired as roofer.").
