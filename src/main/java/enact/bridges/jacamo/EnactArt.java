@@ -123,7 +123,6 @@ public class EnactArt extends Artifact implements ConstitutiveListener, Normativ
 
 	@Override
 	public void addAgentAssignment(String assignee, AgentStatusFunction sf) {
-//		System.out.println("adding agent assignment: " + assignee + "count-as " + sf );		
 		try {
 			YQueue.add(parseLiteral("sai___is("+assignee+","+sf+")[inst_fact]"));
 		} catch (ParseException e) {
@@ -137,7 +136,6 @@ public class EnactArt extends Artifact implements ConstitutiveListener, Normativ
 
 	@Override
 	public void addEventAssignment(String assignee, EventStatusFunction sf, Atom agent) {
-//		System.out.println("adding event assignment: " + assignee + "count-as " + sf );
 		try {
 			YQueue.add(parseLiteral("sai___is("+assignee+","+sf+")[inst_fact]"));
 		} catch (ParseException e) {
@@ -178,7 +176,7 @@ public class EnactArt extends Artifact implements ConstitutiveListener, Normativ
 	@Override
 	public void created(NormInstance o) {		
 		addNormativeFact(o,"created");
-		
+
 		try {
 			Pred p = new Pred("created");
 			p.addTerm(o);
@@ -226,14 +224,28 @@ public class EnactArt extends Artifact implements ConstitutiveListener, Normativ
 	public void unfulfilled(NormInstance o) {
 		addNormativeFact(o, "unfulfilled");
 	}
+
+
+
+
+	@Override
+	public void sanction(String normId, EventType event, Literal sanction) {
+		addNormativeFact(sanction);
+	}
+
+
 	
-	
+
 	public boolean addNormativeFact(Literal o, String functor) {
+		Pred p = new Pred(functor);
+		p.addTerm(o);
+		return addNormativeFact(p);
+	}
+	
+	public boolean addNormativeFact(Literal o) {
 		try {
-			Pred p = new Pred(functor);
-			p.addTerm(o);
-			p.addAnnot(parseLiteral("inst_fact"));
-			YQueue.add(p);
+			o.addAnnot(parseLiteral("inst_fact"));
+			YQueue.add(o);
 			return true;
 		} catch (ParseException e) {
 			e.printStackTrace();
@@ -241,8 +253,8 @@ public class EnactArt extends Artifact implements ConstitutiveListener, Normativ
 		} catch (TokenMgrError e) {
 			e.printStackTrace();
 			return false;
-		}	
+		}		
 	}
-	
+
 
 }
