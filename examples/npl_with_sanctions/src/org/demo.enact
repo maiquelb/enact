@@ -1,0 +1,21 @@
+play(Ag,window_fitter,_) enact-as mail(Ag,"You have been hired as window fitter.").
+play(Ag,roofer,_) enact-as  mail(Ag,"You have been hired as roofer.").
+play(Ag,bricklayer,_) enact-as mail(Ag,"You have been hired as bricklayer.").
+play(Ag,site_prep_contractor,_) enact-as mail(Ag,"You have been hired as site prep.").
+play(Ag,painter,_) enact-as mail(Ag,"You have been hired as painter.").
+play(Ag,electrician,_) enact-as mail(Ag,"You have been hired as electrician.").
+play(Ag,plumber,_) enact-as mail(Ag,"You have been hired as plumber.").
+play(Ag,door_fitter,_) enact-as mail(Ag,"You have been hired as door fitter.").
+
+
+done(_,Task,Ag) enact-as pay(Ag).
+
+created(obligation(Ag,Why,Goal,Deadline)) enact-as notify(Ag, "You have new obligation.").
+
+fulfilled(obligation(Ag,Why,Goal,Deadline)) enact-as notify(Ag, "Obligation fulfilled.").
+
+unfulfilled(obligation(Ag,Why,Goal,Deadline)) enact-as notify(Ag, "Obligation unfulfilled.").
+
+inactive(obligation(Ag,Why,Goal,Deadline)) enact-as notify(Ag, "Obligation inactive.").
+
+sanction(Ag,S) enact-as sanction_enactment(S,Ag).

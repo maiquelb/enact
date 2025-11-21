@@ -1,0 +1,26 @@
+mas sanction_demo {
+
+    agent karlos{
+        focus: wsp_test.clock, 
+               inst_test.inst_test_art, //focus on the institutional artifact
+               wsp_enact.enact_art,
+               wsp_enact.enact_listener
+        goals: manage_clock, //start the clock to produces institutional facts
+               setup_npl, //setup the normative engine
+               setup_sai //connect institution with the normative engine
+    }
+
+    workspace wsp_test{
+    	artifact clock : cartago.tools.Clock() //the clock produces the institutional facts that activate norms
+    }
+
+    workspace wsp_enact{
+      artifact enact_art : enact.bridges.jacamo.EnactArt("src/org/demo.enact")
+      artifact enact_listener : enact.bridges.jacamo.EnactListenerArt
+   }
+
+    institution inst_test:constitutive.sai{
+       workspaces: wsp_test
+   }
+
+}
