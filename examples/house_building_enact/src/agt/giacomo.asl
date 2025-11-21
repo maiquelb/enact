@@ -21,11 +21,16 @@ number_of_tasks(NS) :- .findall( S, task(S), L) & .length(L,NS).
 +!setup_enact: focusing(InstArt,bh_art,_,_,_,_)  //constitutive artifact
                &  focusing(EnactArt,enact_art,_,_,_,_) //enact artifact
                &  focusing(EnactListenerArt,enact_listener,_,_,_,_) //enact artifact
-    <- //lookupArtifact(bh_art,InstArt);    
+    <- //lookupArtifact(/main/bh/bh_art,InstArt);     //TENTAR COM O NOME DO WORKSPACE
+       !in_ora4mas;
+       lookupArtifact("bhsch", SchArt);
+       focus(SchArt);
        getSaiEngine(SaiEngine)[artifact_id(InstArt)];
        getEnactListener(EnactListener)[artifact_id(EnactListenerArt)];
        addInstitutionalFactSource(SaiEngine)[artifact_id(EnactArt)];     
-       addEnactListener(EnactListener)[artifact_id(EnactArt)];       
+       addEnactListener(EnactListener)[artifact_id(EnactArt)];      
+       getNormativeListener(EnactNormativeListener)[artifact_id(EnactArt)];
+       addNormativeListener(EnactNormativeListener)[artifact_id(SchArt)];
        .
 
 -!setup_enact

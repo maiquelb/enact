@@ -14,6 +14,7 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 import cartago.Artifact;
 import cartago.OPERATION;
+import cartago.OpFeedbackParam;
 import enact.interpreter.EnactListener;
 import enact.interpreter.EnactReasoner;
 import enact.lang.parser.enactLexer;
@@ -23,8 +24,12 @@ import enact.lang.semantics.EnactProgramReasoner;
 import jason.asSyntax.Atom;
 import jason.asSyntax.Literal;
 import jason.asSyntax.Pred;
+import jason.asSyntax.Structure;
 import jason.asSyntax.parser.ParseException;
 import jason.asSyntax.parser.TokenMgrError;
+import npl.NPLInterpreter.EventType;
+import npl.NormInstance;
+import npl.NormativeListener;
 import sai.main.institution.ConstitutiveListener;
 import sai.main.institution.SaiEngine;
 import sai.main.lang.semantics.statusFunction.AgentStatusFunction;
@@ -33,9 +38,9 @@ import sai.main.lang.semantics.statusFunction.StateStatusFunction;
 
 import static jason.asSyntax.ASSyntax.parseLiteral;
 
-public class EnactArt extends Artifact implements ConstitutiveListener{
-	
-	
+public class EnactArt extends Artifact implements ConstitutiveListener, NormativeListener{
+
+
 	private ConcurrentLinkedQueue<Literal> YQueue = new ConcurrentLinkedQueue<Literal>();
 	private EnactReasoner reasoner = new EnactReasoner(YQueue);
 	private EnactProgramReasoner program = new EnactProgramReasoner(reasoner.getReasoner());
@@ -72,13 +77,13 @@ public class EnactArt extends Artifact implements ConstitutiveListener{
 		
 		return true;
 	}
-	
-//	@Override
-//	public void addEnactEffect(Collection<Literal> effect) {
-//		log(effect.toString());		
-//	}
 
-	
+	//	@Override
+	//	public void addEnactEffect(Collection<Literal> effect) {
+	//		log(effect.toString());		
+	//	}
+
+
 	/**
 	 * Add some source of institutional fact (e.g. SAI engine, NPL engine etc)
 	 */
@@ -160,7 +165,83 @@ public class EnactArt extends Artifact implements ConstitutiveListener{
 	@Override
 	public void removeEventAssignment(String assignee, EventStatusFunction sf, AgentStatusFunction agent) {
 		// TODO Auto-generated method stub
+
+	}
+
+
+	/* Return the artifact itself as a NormativeListener */
+	@OPERATION 
+	public void getNormativeListener(OpFeedbackParam<NormativeListener> listener){
+		listener.set(this);
+	}	
+
+	@Override
+	public void created(NormInstance o) {		
+		addNormativeFact(o,"created");
 		
+		try {
+			Pred p = new Pred("created");
+			p.addTerm(o);
+			p.addAnnot(parseLiteral("inst_fact"));
+			YQueue.add(p);			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TokenMgrError e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+	}
+
+	@Override
+	public void failure(Structure f) {		
+		try {
+			Literal l = f;
+			l.addAnnot(parseLiteral("inst_fact"));
+			YQueue.add(l);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TokenMgrError e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+	}
+
+
+	@Override
+	public void fulfilled(NormInstance o) {
+		addNormativeFact(o, "fulfilled");
+	}
+
+
+	@Override
+	public void inactive(NormInstance o) {
+		addNormativeFact(o, "inactive");
+	}
+
+
+
+	@Override
+	public void unfulfilled(NormInstance o) {
+		addNormativeFact(o, "unfulfilled");
+	}
+	
+	
+	public boolean addNormativeFact(Literal o, String functor) {
+		try {
+			Pred p = new Pred(functor);
+			p.addTerm(o);
+			p.addAnnot(parseLiteral("inst_fact"));
+			YQueue.add(p);
+			return true;
+		} catch (ParseException e) {
+			e.printStackTrace();
+			return false;
+		} catch (TokenMgrError e) {
+			e.printStackTrace();
+			return false;
+		}	
 	}
 	
 

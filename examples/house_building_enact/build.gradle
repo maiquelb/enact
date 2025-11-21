@@ -21,6 +21,7 @@ repositories {
 
 dependencies {
     implementation('org.jacamo:jacamo:1.3.0')
+    implementation files('lib/sai-0.5.4.jar')
     implementation files('lib/enact-0.0.1.jar')
 }
 
