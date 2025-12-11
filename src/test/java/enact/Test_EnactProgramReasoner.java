@@ -1,79 +1,202 @@
 package enact;
 
 import jason.asSyntax.Literal;
-import jason.asSyntax.LogicalFormula;
+import jason.asSyntax.parser.ParseException;
+import jason.asSyntax.parser.TokenMgrError;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static jason.asSyntax.ASSyntax.parseLiteral;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import static org.junit.Assert.*;
+
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.Iterator;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import org.antlr.v4.runtime.ANTLRInputStream;
-import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.tree.ParseTree;
-import org.antlr.v4.runtime.tree.ParseTreeWalker;
-import org.junit.jupiter.api.Test;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
 import enact.interpreter.EnactReasoner;
-import enact.lang.parser.enactLexer;
-import enact.lang.parser.enactListenerImpl;
-import enact.lang.parser.enactParser;
-import enact.lang.semantics.EnactProgram;
 import enact.lang.semantics.EnactProgramReasoner;
-import enact.lang.semantics.EnactRule;
 
-class Test_EnactProgramReasoner {
+import static enact.util.Util.loadEnactProgram;
+
+public class Test_EnactProgramReasoner {
+
+	@Rule
+	public TemporaryFolder tempFolder = new TemporaryFolder();
 
 	@Test
-	void testAddEnactRule() {
-//		ConcurrentLinkedQueue<LogicalFormula> YQueue = new ConcurrentLinkedQueue<LogicalFormula>();
-//		EnactReasoner reasoner = new EnactReasoner(YQueue);
-//		EnactProgramReasoner program = new EnactProgramReasoner(reasoner.getReasoner());
-//		loadEnactProgram(program);
-//		
-//
-//		reasoner.start();
-//		
-//		
-//		
-//		 try {
-//			Thread.sleep(5000);
-//		} catch (InterruptedException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+	public void testLoadProgram() {
+		File file = writeTestProgram();
+
+		assertNotNull(file);
+
+		ConcurrentLinkedQueue<Literal> YQueue = new ConcurrentLinkedQueue<>();
+		EnactReasoner reasoner = new EnactReasoner(YQueue);
+		EnactProgramReasoner program = new EnactProgramReasoner(reasoner.getReasoner());
+
+		String expected = "((x(y) & v(W)) | (a(b,W) & not (t))) enact-as test(W).\n" +
+				"v(Y) enact-as b(Y).\n"+
+				"w(Y) enact-as b(Y).\n";
+
+		if (loadEnactProgram(file.getAbsolutePath(), program)) {
+			assertEquals(program.toString().replace("\r\n", "\n"), expected);
+		}
+		else
+			assertTrue(false);
 
 	}
 
-	private void loadEnactProgram(EnactProgram program) {
-		InputStream is = null;
+	/*
+	 * Test the production of new effects 
+	 */
+	@Test
+	public void test_add_new_effects() throws ParseException, TokenMgrError {
+		File file = writeTestProgram();
+		EnactListener4Test listener = new EnactListener4Test();
+		ConcurrentLinkedQueue<Literal> YQueue = new ConcurrentLinkedQueue<>();
+		EnactReasoner reasoner = new EnactReasoner(YQueue);
+		EnactProgramReasoner program = new EnactProgramReasoner(reasoner.getReasoner());
+		reasoner.addEnactListener(listener);
+		loadEnactProgram(file.getAbsolutePath(), program);
+		reasoner.start();
+
+		YQueue.add(parseLiteral("v(3)"));
+
+		int i=0;
+		while(i<1000 && listener.getCounter()==0) { 
+			i++;
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
+
+		assertEquals(listener.getEffects().size(), 1); //check whether 1 effect has been produced
+
+		listener.setCounter(0);
+
+
+
+		YQueue.add(parseLiteral("x(y)"));
+
+		i=0;
+		listener.setCounter(0);
+		while(i<1000000 && listener.getCounter()==0) { 
+			i++;
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
+
+		
+		assertEquals(listener.getEffects().size(), 2); //check whether a second effect has been produced
+
+
+
+		//*** Remove a fact - must delete an effect        
 		try {
-			is = new FileInputStream("demo.enact");
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
+			reasoner.retract("v(3)");
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-        ANTLRInputStream input = null;
-		try {
-			input = new ANTLRInputStream(is);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        enactLexer constLexer = new enactLexer(input);        
-        CommonTokenStream tokens = new CommonTokenStream(constLexer);
-        enactParser constParser = new enactParser(tokens);
-        ParseTree tree = constParser.enact_program();
-        ParseTreeWalker walker = new ParseTreeWalker(); // create standard walker
-        enactListenerImpl constExtractor = new enactListenerImpl(program);
-        walker.walk(constExtractor, tree); // initiate walk of tree with listener
-        
-        
-        
-	}
 	
+		i=0;
+		listener.setCounter(0);
+		while(i<10000000 && listener.getCounter()==0) { 
+			i++;
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}        
+		}
+
+		assertFalse(reasoner.getEnactEffects().contains(parseLiteral("b(3)")));
+		assertEquals(listener.getEffects().size(), 0);
+
+			
+		YQueue.add(parseLiteral("v(3)"));
+		i=0;
+		listener.setCounter(0);
+		while(i<1000 && listener.getCounter()==0) { 
+			i++;
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
+		assertEquals(listener.getEffects().size(), 2); 
+		
+
+		//add a new fact that enact an effect that already exists - nothing must happen
+		YQueue.add(parseLiteral("w(3)"));
+		i=0;
+		listener.setCounter(0);
+		while(i<1000 && listener.getCounter()==0) { 
+			i++;
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
+		assertEquals(listener.getEffects().size(), 2); 
+
+
+		//*** Remove a fact whose enactment is also enacted by another valid fact - the enactment must not be dropped        
+		try {
+			reasoner.retract("w(3)");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		i=0;
+		listener.setCounter(0);
+		while(i<1000 && listener.getCounter()==0) { 
+			i++;
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}        
+		}
+		assertEquals(listener.getEffects().size(), 2);
+
+	}
+
+	private File writeTestProgram() {
+		File file = null;
+		try {
+			file = tempFolder.newFile("test.enact");  
+
+			try (FileWriter fw = new FileWriter(file)) {
+				fw.write(
+						"x(y) & v(W) | a(b,W) & not(t) enact-as test(W).\n" +
+								"v(Y) enact-as b(Y).\n" +
+								"w(Y) enact-as b(Y)."
+						);
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+			fail("Erro ao criar arquivo temporário");
+		}
+		return file;
+	}
 }

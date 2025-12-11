@@ -30,7 +30,7 @@ public class EnactProgram extends Observable {
 		String s = "";
 		Iterator<EnactRule> it = this.getRules().iterator();
 		while(it.hasNext())
-			s = s.concat(it.next().toString());		
+			s = s.concat(it.next().toString()).concat(".\n");		
 		return s;
 	}
 

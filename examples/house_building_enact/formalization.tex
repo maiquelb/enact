@@ -1,0 +1,45 @@
+\documentclass{article}
+
+\usepackage{amsthm}
+\usepackage{amsmath}
+
+\newtheorem{definition}{Definition}
+
+\begin{document}
+
+
+\section{Prelimimary definitions}
+
+\begin{definition}[Enact Rule]
+    An enact rule is a pair $(y,x)$ where (i)~$y$ is a logical formula and $x$ is an expected enactment effect, expressed as an identifier followed by $n\geq 0$ arguments.
+\end{definition}
+
+\begin{definition}[Enact Specificaton]
+    An enact specification $\mathcal{E}$ is a set of enact rules.
+\end{definition}
+
+\begin{definition}[Institutional state]
+  The institutional state $I$ is a set of facts representing properties of all the institutional components of the system (constitutive rules, norms, sanctions, etc.).  
+\end{definition}
+It is assumed that 
+(i)~the term $y$ of an enact rule $(x,y)$ is evaluated with respect to a representation of $I$; 
+(ii)~this representation is allways consistent;
+(iii)~if ~$i\in I$, then $\{i\}^\prime\cup I=I\rightarrow i^\prime=i$.
+
+\section{Enactment dynamics}
+
+
+\begin{align}
+\frac{\exists_{(y,x)\in\mathcal{E}}I\models y\theta \ \ \ x\theta\notin E}
+{E\longrightarrow E\cup x\theta}
+\end{align}
+Informally, if a formula $y$, under a substitution $\theta$, is true with respect the current institutional state, 
+then the current enact effects include the  $x$, under $\theta$.
+
+
+\begin{align}
+  \frac{\exists_{(y,x)\in\mathcal{E}}x\theta\in E\wedge I\not\models y\theta}
+  {E\longrightarrow E\setminus x\theta}
+\end{align}
+\end{document}
+

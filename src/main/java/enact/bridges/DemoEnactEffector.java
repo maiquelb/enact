@@ -13,8 +13,14 @@ public class DemoEnactEffector implements EnactListener {
 
 	@Override
 	public void addEnactEffect(Collection<Literal> effect) {
-		System.out.println("[DemoEnactEffector] " + effect);
+		System.out.println("[DemoEnactEffector] adding effects " + effect);
 
+	}
+
+	@Override
+	public void removeEnactEffect(Collection<Literal> effect) {
+		System.out.println("[DemoEnactEffector] removing effects " + effect);
+		
 	}
 
 }

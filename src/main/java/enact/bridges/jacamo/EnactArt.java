@@ -21,6 +21,9 @@ import enact.lang.parser.enactLexer;
 import enact.lang.parser.enactListenerImpl;
 import enact.lang.parser.enactParser;
 import enact.lang.semantics.EnactProgramReasoner;
+
+import static enact.util.Util.loadEnactProgram;
+
 import jason.asSyntax.Atom;
 import jason.asSyntax.Literal;
 import jason.asSyntax.Pred;
@@ -46,42 +49,11 @@ public class EnactArt extends Artifact implements ConstitutiveListener, Normativ
 	private EnactProgramReasoner program = new EnactProgramReasoner(reasoner.getReasoner());
 	
 	void init(String enactProgram) {
-		loadEnactProgram(enactProgram);
+		if(loadEnactProgram(enactProgram, this.program))
+			this.reasoner.start();
 	}
 
-	
-	private boolean loadEnactProgram(String filename) {
-		InputStream is = null;
-		ANTLRInputStream input = null;
-		try {
-			is = new FileInputStream(filename);
-			input = new ANTLRInputStream(is);
-			enactLexer constLexer = new enactLexer(input);        
-			CommonTokenStream tokens = new CommonTokenStream(constLexer);
-			enactParser constParser = new enactParser(tokens);
-			ParseTree tree = constParser.enact_program();
-			ParseTreeWalker walker = new ParseTreeWalker(); // create standard walker
-			enactListenerImpl constExtractor = new enactListenerImpl(program);
-			walker.walk(constExtractor, tree); // initiate walk of tree with listener
-			reasoner.start();
-			
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return false;
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return false;
-		}
-		
-		return true;
-	}
 
-	//	@Override
-	//	public void addEnactEffect(Collection<Literal> effect) {
-	//		log(effect.toString());		
-	//	}
 
 
 	/**

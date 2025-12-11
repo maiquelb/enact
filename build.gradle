@@ -33,7 +33,7 @@ dependencies {
     
 	
     api 'org.apache.commons:commons-lang3:3.14.0'
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
+    testImplementation 'junit:junit:4.12'
 }
 
 tasks.named('generateGrammarSource') {
@@ -41,6 +41,6 @@ tasks.named('generateGrammarSource') {
 }
 
 
-test {
-    useJUnitPlatform()
-}
+//test {
+//    useJUnitPlatform()
+//}

@@ -9,4 +9,6 @@ public interface EnactListener {
 
 	public void addEnactEffect(Collection<Literal> effect);
 	
+	public void removeEnactEffect(Collection<Literal> effect);
+	
 }

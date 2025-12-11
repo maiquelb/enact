@@ -17,12 +17,18 @@ public class EnactListenerArt extends Artifact implements EnactListener{
 
 	@Override
 	public void addEnactEffect(Collection<Literal> effect) {
-		log("enact: " + effect.toString());		
+		log("add enact effect: " + effect.toString());		
 	}
 	
 	 @OPERATION 
 	    public void getEnactListener(OpFeedbackParam<EnactListener> engine){
 	        engine.set(this);
 	    }
+
+	@Override
+	public void removeEnactEffect(Collection<Literal> effect) {
+		log("add enact effect: " + effect.toString());
+		
+	}
 
 }
