@@ -78,11 +78,11 @@ public class EnactReasoner extends Thread {
 			while (true) {				
 				globalCicle++;
 				Literal s = queue.poll();
-				if (s != null) {
+				if (s != null) { //if the institutional state changes
 					reasoner.assertValue(s.toString());
 					//look for facts to remove
 					for(Map.Entry<LogicalFormula, ArrayList<Literal>> fact : enactFacts.entrySet()){ //for each pair (y,X) where X is a set of enact effects												
-						if(!this.reasoner.check(fact.getKey().toString())) //if the fact that produced the enactments is no longer true... 
+						if(!this.reasoner.check(fact.getKey().toString())) 	 
 							for(Literal l: fact.getValue()) { //... for each effect in the set X
 								if(canRemove(l)){ //if the effect is not effect of another valid fact
 									this.enactEffects.remove(l); //remove the corresponding effect
@@ -102,16 +102,16 @@ public class EnactReasoner extends Thread {
 
 					//calculate new facts
 					Collection<EnactFact>  effects = calculate(); //get a set of effects
-					Collection<Literal> effectsFinal = new ArrayList<Literal>();
+					Collection<Literal> effectsFinal = new ArrayList<Literal>(); //effectsFinal is the set of new effects added in the current round
 					for(EnactFact l : effects) {						
-						addEnactFact(l.y, l.x); // add the pair (y,x) the set of enact facts
+						addEnactFact(l.y, l.x); // add the effect x to the set of effects of y
 
-						if(!enactEffects.contains(l.x)) { //add the effect x to the current enact state
-							enactEffects.add(l.x);
-							effectsFinal.add(l.x);
+						if(!enactEffects.contains(l.x)) { 
+							enactEffects.add(l.x); //add the effect x to the current enact state
+							effectsFinal.add(l.x); //add the effect x to the set of new effects added in the current round 
 						}
 					}
-					if(effects.size()>0) {
+					if(effectsFinal.size()>0) {
 						for(EnactListener l : this.enactListeners) {
 							l.addEnactEffect(effectsFinal);
 						}
