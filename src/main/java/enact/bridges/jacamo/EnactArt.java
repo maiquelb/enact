@@ -40,9 +40,11 @@ import sai.main.lang.semantics.statusFunction.EventStatusFunction;
 import sai.main.lang.semantics.statusFunction.StateStatusFunction;
 
 import static jason.asSyntax.ASSyntax.parseLiteral;
+import static jason.asSyntax.ASSyntax.createAtom;
 
 public class EnactArt extends Artifact implements ConstitutiveListener, NormativeListener{
 
+	private static final Literal INST_FACT_ANNOT = createAtom("inst_fact");
 
 	private ConcurrentLinkedQueue<Literal> YQueue = new ConcurrentLinkedQueue<Literal>();
 	private EnactReasoner reasoner = new EnactReasoner(YQueue);
@@ -146,17 +148,13 @@ public class EnactArt extends Artifact implements ConstitutiveListener, Normativ
 	}	
 
 	@Override
-	public void created(NormInstance o) {		
-		addNormativeFact(o,"created");
-
+	public void created(NormInstance o) {	
 		try {
-			Pred p = new Pred("created");
-			p.addTerm(o);
-			p.addAnnot(parseLiteral("inst_fact"));
+			Pred p = new Pred(o.getFunctor());
+			p.addTerms(o.getTerms());
+			p.addAnnot(INST_FACT_ANNOT);
+			p.addAnnot(o.getAnnot("created"));
 			YQueue.add(p);			
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (TokenMgrError e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -181,20 +179,32 @@ public class EnactArt extends Artifact implements ConstitutiveListener, Normativ
 
 	@Override
 	public void fulfilled(NormInstance o) {
-		addNormativeFact(o, "fulfilled");
+		Pred p = new Pred(o.getFunctor());
+		p.addTerms(o.getTerms());
+		p.addAnnot(INST_FACT_ANNOT);
+		p.addAnnot(o.getAnnot("fulfilled"));
+		YQueue.add(p);
 	}
 
 
 	@Override
 	public void inactive(NormInstance o) {
-		addNormativeFact(o, "inactive");
+		Pred p = new Pred(o.getFunctor());
+		p.addTerms(o.getTerms());
+		p.addAnnot(INST_FACT_ANNOT);
+		p.addAnnot(o.getAnnot("inactive"));
+		YQueue.add(p);
 	}
 
 
 
 	@Override
 	public void unfulfilled(NormInstance o) {
-		addNormativeFact(o, "unfulfilled");
+		Pred p = new Pred(o.getFunctor());
+		p.addTerms(o.getTerms());
+		p.addAnnot(INST_FACT_ANNOT);
+		p.addAnnot(o.getAnnot("unfulfilled"));
+		YQueue.add(p);		
 	}
 
 
@@ -216,12 +226,9 @@ public class EnactArt extends Artifact implements ConstitutiveListener, Normativ
 	
 	public boolean addNormativeFact(Literal o) {
 		try {
-			o.addAnnot(parseLiteral("inst_fact"));
+			o.addAnnot(INST_FACT_ANNOT);
 			YQueue.add(o);
 			return true;
-		} catch (ParseException e) {
-			e.printStackTrace();
-			return false;
 		} catch (TokenMgrError e) {
 			e.printStackTrace();
 			return false;

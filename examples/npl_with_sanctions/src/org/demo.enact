@@ -1,23 +1,9 @@
 
+obligation(Ag,Why,Goal,Deadline)[created(_)] enact-as notify(Ag, "You have new obligation.").
 
+obligation(Ag,Why,Goal,Deadline)[fulfilled(_)] enact-as notify(Ag, "Obligation fulfilled.").
 
-done(_,Task,Ag) enact-as pay(Ag).
+obligation(Ag,Why,Goal,Deadline)[unfulfilled(_)] enact-as notify(Ag, "Obligation unfulfilled.").
 
-created(obligation(Ag,Why,Goal,Deadline)) enact-as notify(Ag, "You have new obligation.").
+sanction(Ag,S) enact-as sanction_enactment(S,Ag).
 
-fulfilled(obligation(Ag,Why,Goal,Deadline)) enact-as notify(Ag, "Obligation fulfilled.").
-
-unfulfilled(obligation(Ag,Why,Goal,Deadline)) enact-as notify(Ag, "Obligation unfulfilled.").
-
- 
-//***** TODO: Handle normative facts as: ***
-//obligation(Ag,Why,Goal,Deadline)[created(V)] enact-as notify(Ag, "xxxx.").
-//obligation(Ag,Why,Goal,Deadline)[unfulfilled(V)] enact-as notify(Ag, "Obligation unfulfilled.").
-//the normative fact is something like obligation(bob,Why,g,Deadline)[created(x),unfulfilled(y)]
-
-//*********************************
-
-
-//inactive(obligation(Ag,Why,Goal,Deadline)) enact-as notify(Ag, "Obligation inactive.").
-
-//sanction(Ag,S) enact-as sanction_enactment(S,Ag).

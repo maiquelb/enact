@@ -1,3 +1,4 @@
+
 play(Ag,window_fitter,_) enact-as mail(Ag,"You have been hired as window fitter.").
 play(Ag,roofer,_) enact-as  mail(Ag,"You have been hired as roofer.").
 play(Ag,bricklayer,_) enact-as mail(Ag,"You have been hired as bricklayer.").
@@ -10,6 +11,20 @@ play(Ag,door_fitter,_) enact-as mail(Ag,"You have been hired as door fitter.").
 
 done(_,Task,Ag) enact-as pay(Ag).
 
+
+
+
+obligation(Ag,Why,Goal,Deadline)[created(_)] enact-as notify(Ag, "You have new obligation.").
+
+obligation(Ag,Why,Goal,Deadline)[fulfilled(_)] enact-as notify(Ag, "Obligation fulfilled.").
+
+obligation(Ag,Why,Goal,Deadline)[unfulfilled(_)] enact-as notify(Ag, "Obligation unfulfilled.").
+
+sanction(Ag,S) enact-as sanction_enactment(S,Ag).
+
+
+
+/*
 created(obligation(Ag,Why,Goal,Deadline)) enact-as notify(Ag, "You have new obligation.").
 
 fulfilled(obligation(Ag,Why,Goal,Deadline)) enact-as notify(Ag, "Obligation fulfilled.").
@@ -18,7 +33,7 @@ unfulfilled(obligation(Ag,Why,Goal,Deadline)) enact-as notify(Ag, "Obligation un
 
 inactive(obligation(Ag,Why,Goal,Deadline)) enact-as notify(Ag, "Obligation inactive.").
 
-/*
+
 //sai__is(State,play(Ag,window_fitter,_)) enact-as mail(Ag,"You have been hired as window fitter.").
 //sai__is(State,play(Ag,roofer,_)) enact-as  mail(Ag,"You have been hired as roofer.").
 //sai__is(State,play(Ag,bricklayer,_)) enact-as mail(Ag,"You have been hired as bricklayer.").
